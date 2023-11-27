@@ -9,6 +9,7 @@ import numpy as np
 from item.box import Box
 from item.cardboard import Cardboard
 from item.medicine import Medicine
+from node.depot import Depot
 from order.order import Order
 from vehicle.vehicle import create_vehicle
 from vrp3d.vrp3d import VRP3D
@@ -61,7 +62,8 @@ class MasterCabang:
             reader = csv.reader(f)
             temp = np.array(list(reader))[1:]
             for i in temp:
-                MasterCabang.Cabang[i[0]] = {
+                MasterCabang.Cabang[i[1]] = {
+                    "Id Cabang": i[0],
                     "Kode Cabang" : i[1],
                     "Nama Cabang" : i[2],
                     "Alamat" : i[3],
@@ -83,6 +85,16 @@ class MasterCabang:
     
     def get_depot_code(id_cabang):
         return MasterCabang.Cabang[id_cabang]["Kode Cabang"]
+    def get_depot_by_kode_cabang(kode_cabang)->Depot:
+        depot_info = MasterCabang.Cabang[kode_cabang]
+        coord = (float(depot_info["Latitude"]), float(depot_info["Longitude"]))
+        depot = Depot(kode_cabang,
+                      depot_info["Nama Cabang"],
+                      depot_info["Alamat"],
+                      coord)
+        return depot
+
+
 
 
 class MasterProduk:
@@ -322,3 +334,19 @@ class ProblemGenerator:
 
     def generate_problem(number_of_vehicles, number_of_orders, max_each_quantity, max_total_quantity):
         return VRP3D(ProblemGenerator.generate_random_vehicles(number_of_vehicles), ProblemGenerator.generate_random_orders(number_of_orders, max_each_quantity, max_total_quantity), MapData.get_random_depot())
+    
+def generate_random_order_list_json(num_order):
+    ProblemGenerator.initialize()
+    kode_cabang, depot_coord1 = ProblemGenerator.get_random_depot()
+    order_list = ProblemGenerator.generate_random_orders(num_order, 3, 10, kode_cabang)
+    out_list = []
+    for order in order_list:
+        for item in order.item_list:
+
+            order_dict = {
+                "order_id":order.id,
+                "cust_id":order.customer_id,
+                "kode_cabang":kode_cabang,
+                "dispatch_date":"12/12/2023",
+                "product_id":
+            }

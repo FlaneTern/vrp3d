@@ -20,8 +20,9 @@ class Medicine(Item):
                  uom: str, 
                  size:np.ndarray, 
                  weight:int,
-                 temp_class:int):
-        super(Medicine, self).__init__(id, size, product_id)
+                 temp_class:int,
+                 is_cito:bool):
+        super(Medicine, self).__init__(id, size, product_id)        
         self.weight = weight
         self.temp_class = temp_class
         self.order_id = order_id
@@ -29,7 +30,8 @@ class Medicine(Item):
         self.product_id = product_id
         self.number = number
         self.uom = uom
-
+        self.is_cito = is_cito
+        
     #@property
     #def id(self)->str:
     #    return self.order_id+"-"+self.customer_id+\

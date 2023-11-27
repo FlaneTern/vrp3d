@@ -22,6 +22,7 @@ class Box(Item):
                  name:str,
                  support_alpha:float=0.51,
                  temperature:int= 0,
+                 is_sort_size:bool=True
                  ):
         super(Box, self).__init__(id, size, name)
         self.max_weight = max_weight
@@ -31,7 +32,8 @@ class Box(Item):
         self.filled_volume = 0
         self.temperature = temperature
         self.ep_list: np.ndarray = None
-        self.alternative_sizes = self.alternative_sizes[np.lexsort((-self.alternative_sizes[:,0], -self.alternative_sizes[:,1], -self.alternative_sizes[:,2]))]
+        if is_sort_size:
+            self.alternative_sizes = self.alternative_sizes[np.lexsort((-self.alternative_sizes[:,0], -self.alternative_sizes[:,1], -self.alternative_sizes[:,2]))]
         d_item1 = Item(uuid1(), np.asanyarray([size[0],size[1],1],dtype=np.int64),"dummy")
         d_item1.position = np.asanyarray([0,0,-1], dtype=np.int64)
         d_item2 = Item(uuid1(), np.asanyarray([size[0],1,size[2]],dtype=np.int64),"dummy")
@@ -72,6 +74,7 @@ class Box(Item):
         #     position[1] + item.size[1] > self.size[1] or \
         #     position[2] + item.size[2] > self.size[2]
         is_overflow = position + item.size > self.size
+        
         is_overflow = np.any(is_overflow)
         if is_overflow:
             return False

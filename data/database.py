@@ -692,12 +692,12 @@ class Database:
     def random_dus():
         dus = random.choice(Database.get_all(Database.CARDBOARD_BOX))
         size = np.asanyarray([dus.length,dus.width,dus.height], dtype=np.int64)
-        return Box(size, dus.max_weight, dus.code)
+        return Box(dus.id, size, dus.max_weight, dus.code)
     
     def random_duses(number_of_duses):
         return [Database.random_dus() for i in range(number_of_duses)]
 
-    def get_all_duses(num_each_dus_size=100) -> List[Cardboard]:
+    def get_all_duses(num_each_dus_size: int=100) -> List[Cardboard]:
         all_dustype_list = Database.get_all(Database.CARDBOARD_BOX)
         duses = []
         for i in range(len(all_dustype_list)):
