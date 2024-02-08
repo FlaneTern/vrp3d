@@ -2,13 +2,13 @@ import datetime
 from random import seed
 
 from item.box import Box
-from data.problem_generator import ProblemGenerator
+#from data.problem_generator import ProblemGenerator
 from vns.saving import saving
 from vns.repack import repack
 from vns.route_dp import improve_tours_by_dp
 from vrp3d.vrp3d import VRP3D
 
-from data.parse_output import parse_output, parse_input
+#from data.parse_output import parse_output, parse_input
 from data.database import Database
 
 

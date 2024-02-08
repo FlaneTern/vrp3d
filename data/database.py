@@ -613,13 +613,13 @@ class Database:
     def get_medicine(product_id, order_id, customer_id, number):
         med = Database.get_by_ids(Database.PRODUCT, [product_id])[0]
         size = np.asanyarray([med.length,med.width,med.height], dtype=np.int64)
-        return Medicine(med.id, str(order_id), str(customer_id), str(med.id), number, med.UOM, size, int(float(med.weight)), TEMP_CLASS[med.delivery_category])
+        return Medicine(med.id, str(order_id), str(customer_id), str(med.id), number, med.UOM, size, int(float(med.weight)), TEMP_CLASS[med.delivery_category], med.is_life_saving)
     
 
     def random_medicine(order_id, customer_id, number): 
         med = random.choice(Database.get_all(Database.PRODUCT))
         size = np.asanyarray([med.length,med.width,med.height], dtype=np.int64)
-        return Medicine(med.id, str(order_id), str(customer_id), str(med.id), number, med.UOM, size, int(float(med.weight)), TEMP_CLASS[med.delivery_category])
+        return Medicine(med.id, str(order_id), str(customer_id), str(med.id), number, med.UOM, size, int(float(med.weight)), TEMP_CLASS[med.delivery_category], med.is_life_saving)
     
     def random_medicines(number_of_medicines, order_id, customer_id, number):
         return [Database.random_medicine(order_id, customer_id, number) for i in range(number_of_medicines)]
@@ -656,7 +656,7 @@ class Database:
             for db_orderdetail in db_orderdetails:
                 med = Database.get_by_columns(Database.PRODUCT, ["id"], [[db_orderdetail.product_id]])[0]
                 size = np.asanyarray([med.length,med.width,med.height], dtype=np.int64)
-                medtemp = Medicine(med.id, str(db_order.id), str(db_order.relation_id), str(med.id), it, med.UOM, size, int(float(med.weight)), TEMP_CLASS[med.delivery_category])
+                medtemp = Medicine(med.id, str(db_order.id), str(db_order.relation_id), str(med.id), it, med.UOM, size, int(float(med.weight)), TEMP_CLASS[med.delivery_category], med.is_life_saving)
                 for k in range(db_orderdetail.quantity):
                     medtemp2 = copy.deepcopy(medtemp)
                     medtemp2.number = it
